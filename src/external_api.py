@@ -18,5 +18,5 @@ def get_user_convert(amount: str, currency: str) -> str:
     return result
 
 
-cur_result = get_user_convert("1000")
-print(cur_result)
+# cur_result = get_user_convert("1000")
+# print(cur_result)
