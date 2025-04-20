@@ -1,5 +1,6 @@
 import json
 import os
+from src.external_api import get_user_convert
 
 
 def get_finans_tranz(path: str) -> dict:
@@ -29,7 +30,7 @@ if __name__ == '__main__':
 
 def get_t_action_currency(tr_action: dict, amount=None) -> float:
     '''Функция принимает тразакцию и возвращет её сумму'''
-    amount_rub = ""
+#    amount_rub = ""
     if tr_action == {}:
         raise TypeError("Транзакция пустая")
     for i in tr_action:
@@ -44,10 +45,10 @@ def get_t_action_currency(tr_action: dict, amount=None) -> float:
             raise ValueError("Некорректная сумма")
         if i["operationAmount"]["currency"]["code"] == "RUB":
             amount_rub = float(i["operationAmount"]["amount"])
-        elif i["operationAmount"]["currency"]["code"] == "USD":
-            amount = float(i["operationAmount"]["amount"])
-            amount_rub = 1001.00
-            amount_rub = get_user_convert(amount)
+        elif i["operationAmount"]["currency"]["code"] == "USD" or "EUR":
+            amount = i["operationAmount"]["amount"]
+            currency = i["operationAmount"]["currency"]["code"]
+            amount_rub = get_user_convert(amount, currency)
         else:
             continue
     return amount_rub

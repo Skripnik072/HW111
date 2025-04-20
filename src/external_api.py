@@ -1,11 +1,10 @@
-import json
 import requests
 
 
-def get_user_convert(amount: str) -> str:
+def get_user_convert(amount: str, currency: str) -> str:
     '''Функция запрашивает курс для конвертации заданной валюты'''
 
-    url = f"https://api.apilayer.com/exchangerates_data/convert?to=USD&from=RUB&amount={amount}"
+    url = f"https://api.apilayer.com/exchangerates_data/convert?to={currency}&from=RUB&amount={amount}"
     payload = {}
     headers = {
         'apikey': "clRtFIX4we3pMNXuluKfc26nNdY9LjoQ"
