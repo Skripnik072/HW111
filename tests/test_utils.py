@@ -1,3 +1,5 @@
+from unittest.mock import patch, mock_open
+
 import pytest
 from src.utils import get_finans_tranz, get_t_action_currency
 
@@ -29,6 +31,17 @@ def path_json():
 
 def test_get_finans_tranz(path_json, expected):
     assert get_finans_tranz(path_json) == expected
+
+
+@patch('builtins.open', new_callable=mock_open) # для отключения вызова файла
+@patch('json.load')
+@patch('os.path.exists', return_value=True) # добавили для отключения проверки наличия файла
+@patch('os.path.getsize', return_value=1) # для отключения проверки размера файла
+def test_get_json_load(mock_getsize, mock_exists, mock_json, mock_file):
+    mock_json.return_value = ["test"]
+    assert get_finans_tranz("test") == ["test"]
+    mock_file.assert_called_once_with("test", encoding='utf-8')
+    mock_json.assert_called_once()
 
 
 def test_cod_error():
